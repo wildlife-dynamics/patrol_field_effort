@@ -323,9 +323,9 @@ def main(params: Params):
             df=reproject_spatial_3857,
             root_path=os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
             filename="spatial_file",
-            filetypes=["gpkg"],
+            filetypes=["geoparquet"],
             filename_prefix="er_spatial_file",
-            sanitize=False,
+            sanitize=True,
             **(params_dict.get("persist_spatial_file") or {}),
         )
         .call()
@@ -648,9 +648,9 @@ def main(params: Params):
             df=reproject_4326,
             root_path=os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
             filename=None,
-            filetypes=["gpkg"],
+            filetypes=["geoparquet"],
             filename_prefix="days_since_patrol_visit",
-            sanitize=False,
+            sanitize=True,
             **(params_dict.get("persist_visit") or {}),
         )
         .call()
@@ -811,9 +811,9 @@ def main(params: Params):
         .call()
     )
 
-    persist_dwell_gkpg = (
+    persist_dwell_geoparquet = (
         persist_df_wrapper.validate()
-        .set_task_instance_id("persist_dwell_gkpg")
+        .set_task_instance_id("persist_dwell_geoparquet")
         .handle_errors()
         .with_tracing()
         .skipif(
@@ -827,10 +827,10 @@ def main(params: Params):
             df=add_dwell_bin_colors,
             root_path=os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
             filename=None,
-            filetypes=["gpkg"],
+            filetypes=["geoparquet"],
             filename_prefix="time_spent_per_cell",
-            sanitize=False,
-            **(params_dict.get("persist_dwell_gkpg") or {}),
+            sanitize=True,
+            **(params_dict.get("persist_dwell_geoparquet") or {}),
         )
         .call()
     )
@@ -856,9 +856,9 @@ def main(params: Params):
         .call()
     )
 
-    persist_ltd_gkpg = (
+    persist_ltd_geoparquet = (
         persist_df_wrapper.validate()
-        .set_task_instance_id("persist_ltd_gkpg")
+        .set_task_instance_id("persist_ltd_geoparquet")
         .handle_errors()
         .with_tracing()
         .skipif(
@@ -872,10 +872,10 @@ def main(params: Params):
             df=calc_ltd_aoi,
             root_path=os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
             filename=None,
-            filetypes=["gpkg"],
+            filetypes=["geoparquet"],
             filename_prefix="patrols_linear_time_density",
-            sanitize=False,
-            **(params_dict.get("persist_ltd_gkpg") or {}),
+            sanitize=True,
+            **(params_dict.get("persist_ltd_geoparquet") or {}),
         )
         .call()
     )
@@ -1059,9 +1059,9 @@ def main(params: Params):
             df=get_patrol_obs,
             root_path=os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
             filename=None,
-            filetypes=["gpkg"],
+            filetypes=["geoparquet"],
             filename_prefix="patrol_observations",
-            sanitize=False,
+            sanitize=True,
             **(params_dict.get("persist_patrol_obs") or {}),
         )
         .call()
@@ -1083,9 +1083,9 @@ def main(params: Params):
             df=patrol_obs_trajs,
             root_path=os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
             filename=None,
-            filetypes=["gpkg"],
+            filetypes=["geoparquet"],
             filename_prefix="patrol_trajectories",
-            sanitize=False,
+            sanitize=True,
             **(params_dict.get("persist_patrol_trajs") or {}),
         )
         .call()
@@ -1213,8 +1213,8 @@ def main(params: Params):
                 "stroked": True,
                 "get_fill_color": "rgba_color",
                 "get_line_color": [0, 0, 0],
-                "opacity": 0.65,
-                "get_line_width": 0.35,
+                "opacity": 0.55,
+                "get_line_width": 0.25,
             },
             legend={
                 "title": "Time Since Visit (Days)",
@@ -1336,8 +1336,8 @@ def main(params: Params):
                 "stroked": True,
                 "get_fill_color": "rgba_color",
                 "get_line_color": [0, 0, 0],
-                "opacity": 0.65,
-                "get_line_width": 0.35,
+                "opacity": 0.55,
+                "get_line_width": 0.25,
             },
             legend={
                 "title": "Time Spent(Hours)",
@@ -1459,8 +1459,8 @@ def main(params: Params):
                 "stroked": True,
                 "get_fill_color": "rgba_color",
                 "get_line_color": [0, 0, 0],
-                "opacity": 0.65,
-                "get_line_width": 0.35,
+                "opacity": 0.55,
+                "get_line_width": 0.25,
             },
             legend={
                 "title": "Time Spent",

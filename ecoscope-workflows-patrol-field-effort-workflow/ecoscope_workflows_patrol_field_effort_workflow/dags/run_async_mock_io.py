@@ -174,9 +174,9 @@ def main(params: Params):
         "add_null_dwell_flag": ["reproject_dwell_gdf"],
         "add_custom_dwell_bins": ["add_null_dwell_flag"],
         "add_dwell_bin_colors": ["add_custom_dwell_bins"],
-        "persist_dwell_gkpg": ["add_dwell_bin_colors"],
+        "persist_dwell_geoparquet": ["add_dwell_bin_colors"],
         "calc_ltd_aoi": ["reproject_trajs", "overlay_meshgrid_spatial"],
-        "persist_ltd_gkpg": ["calc_ltd_aoi"],
+        "persist_ltd_geoparquet": ["calc_ltd_aoi"],
         "reproject_ltd": ["calc_ltd_aoi"],
         "add_null_ltd_flag": ["reproject_ltd"],
         "add_custom_ltd_bins": ["add_null_ltd_flag"],
@@ -454,10 +454,10 @@ def main(params: Params):
                 "root_path": os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
                 "filename": "spatial_file",
                 "filetypes": [
-                    "gpkg",
+                    "geoparquet",
                 ],
                 "filename_prefix": "er_spatial_file",
-                "sanitize": False,
+                "sanitize": True,
             }
             | (params_dict.get("persist_spatial_file") or {}),
             method="call",
@@ -790,10 +790,10 @@ def main(params: Params):
                 "root_path": os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
                 "filename": None,
                 "filetypes": [
-                    "gpkg",
+                    "geoparquet",
                 ],
                 "filename_prefix": "days_since_patrol_visit",
-                "sanitize": False,
+                "sanitize": True,
             }
             | (params_dict.get("persist_visit") or {}),
             method="call",
@@ -956,9 +956,9 @@ def main(params: Params):
             | (params_dict.get("add_dwell_bin_colors") or {}),
             method="call",
         ),
-        "persist_dwell_gkpg": Node(
+        "persist_dwell_geoparquet": Node(
             async_task=persist_df_wrapper.validate()
-            .set_task_instance_id("persist_dwell_gkpg")
+            .set_task_instance_id("persist_dwell_geoparquet")
             .handle_errors()
             .with_tracing()
             .skipif(
@@ -974,12 +974,12 @@ def main(params: Params):
                 "root_path": os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
                 "filename": None,
                 "filetypes": [
-                    "gpkg",
+                    "geoparquet",
                 ],
                 "filename_prefix": "time_spent_per_cell",
-                "sanitize": False,
+                "sanitize": True,
             }
-            | (params_dict.get("persist_dwell_gkpg") or {}),
+            | (params_dict.get("persist_dwell_geoparquet") or {}),
             method="call",
         ),
         "calc_ltd_aoi": Node(
@@ -1003,9 +1003,9 @@ def main(params: Params):
             | (params_dict.get("calc_ltd_aoi") or {}),
             method="call",
         ),
-        "persist_ltd_gkpg": Node(
+        "persist_ltd_geoparquet": Node(
             async_task=persist_df_wrapper.validate()
-            .set_task_instance_id("persist_ltd_gkpg")
+            .set_task_instance_id("persist_ltd_geoparquet")
             .handle_errors()
             .with_tracing()
             .skipif(
@@ -1021,12 +1021,12 @@ def main(params: Params):
                 "root_path": os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
                 "filename": None,
                 "filetypes": [
-                    "gpkg",
+                    "geoparquet",
                 ],
                 "filename_prefix": "patrols_linear_time_density",
-                "sanitize": False,
+                "sanitize": True,
             }
-            | (params_dict.get("persist_ltd_gkpg") or {}),
+            | (params_dict.get("persist_ltd_geoparquet") or {}),
             method="call",
         ),
         "reproject_ltd": Node(
@@ -1216,10 +1216,10 @@ def main(params: Params):
                 "root_path": os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
                 "filename": None,
                 "filetypes": [
-                    "gpkg",
+                    "geoparquet",
                 ],
                 "filename_prefix": "patrol_observations",
-                "sanitize": False,
+                "sanitize": True,
             }
             | (params_dict.get("persist_patrol_obs") or {}),
             method="call",
@@ -1242,10 +1242,10 @@ def main(params: Params):
                 "root_path": os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
                 "filename": None,
                 "filetypes": [
-                    "gpkg",
+                    "geoparquet",
                 ],
                 "filename_prefix": "patrol_trajectories",
-                "sanitize": False,
+                "sanitize": True,
             }
             | (params_dict.get("persist_patrol_trajs") or {}),
             method="call",
@@ -1379,8 +1379,8 @@ def main(params: Params):
                         0,
                         0,
                     ],
-                    "opacity": 0.65,
-                    "get_line_width": 0.35,
+                    "opacity": 0.55,
+                    "get_line_width": 0.25,
                 },
                 "legend": {
                     "title": "Time Since Visit (Days)",
@@ -1511,8 +1511,8 @@ def main(params: Params):
                         0,
                         0,
                     ],
-                    "opacity": 0.65,
-                    "get_line_width": 0.35,
+                    "opacity": 0.55,
+                    "get_line_width": 0.25,
                 },
                 "legend": {
                     "title": "Time Spent(Hours)",
@@ -1643,8 +1643,8 @@ def main(params: Params):
                         0,
                         0,
                     ],
-                    "opacity": 0.65,
-                    "get_line_width": 0.35,
+                    "opacity": 0.55,
+                    "get_line_width": 0.25,
                 },
                 "legend": {
                     "title": "Time Spent",

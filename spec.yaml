@@ -116,9 +116,9 @@ workflow:
       root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
       filename: spatial_file
       filetypes: 
-        - gpkg
+        - geoparquet
       filename_prefix: er_spatial_file 
-      sanitize: false
+      sanitize: true
       
   - name: Create Analysis Grid
     id: create_geo_meshgrid
@@ -258,9 +258,9 @@ workflow:
       root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
       filename: null
       filetypes: 
-        - gpkg
+        - geoparquet
       filename_prefix: days_since_patrol_visit
-      sanitize: false
+      sanitize: true
 
   - name: Prepare Trajectories for Dwell Calculation 
     id: reset_patrol_trajs
@@ -329,17 +329,16 @@ workflow:
       unvisited: "#808080"
 
   - name: Save Dwell Time Data
-    id: persist_dwell_gkpg 
+    id: persist_dwell_geoparquet
     task: persist_df_wrapper
     partial:  
       df: ${{ workflow.add_dwell_bin_colors.return }}
       root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
       filename: null
       filetypes: 
-        - gpkg 
-
+        - geoparquet
       filename_prefix: time_spent_per_cell
-      sanitize: false
+      sanitize: true
 
   - name: Calculate Patrol Route Density 
     id: calc_ltd_aoi
@@ -350,16 +349,16 @@ workflow:
       meshgrid: ${{ workflow.overlay_meshgrid_spatial.return }} 
 
   - name: Save Route Density Data 
-    id: persist_ltd_gkpg 
+    id: persist_ltd_geoparquet
     task: persist_df_wrapper
     partial:  
       df: ${{ workflow.calc_ltd_aoi.return }}
       root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
       filename: null
       filetypes: 
-        - gpkg
+        - geoparquet
       filename_prefix: patrols_linear_time_density 
-      sanitize: false
+      sanitize: true
 
   - name: Prepare Route Density for Mapping 
     id: reproject_ltd 
@@ -445,9 +444,9 @@ workflow:
       root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
       filename: null
       filetypes: 
-        - gpkg
+        - geoparquet
       filename_prefix: patrol_observations
-      sanitize: false
+      sanitize: true
 
   - name: Save Patrol Trajectories 
     id: persist_patrol_trajs
@@ -457,9 +456,9 @@ workflow:
       root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
       filename: null
       filetypes: 
-        - gpkg
+        - geoparquet
       filename_prefix: patrol_trajectories 
-      sanitize: false
+      sanitize: true
 
   - name: Set Study Area Opacity
     id: spatial_features_opacity
@@ -515,8 +514,8 @@ workflow:
         stroked: true 
         get_fill_color: "rgba_color"
         get_line_color: [0, 0, 0]
-        opacity: 0.65
-        get_line_width: 0.35 
+        opacity: 0.55
+        get_line_width: 0.25 
       legend: 
         title: "Time Since Visit (Days)"
         label_column: visit_bin 
@@ -575,8 +574,8 @@ workflow:
         stroked: true 
         get_fill_color: "rgba_color"
         get_line_color: [0, 0, 0]
-        opacity: 0.65
-        get_line_width: 0.35
+        opacity: 0.55
+        get_line_width: 0.25 
       legend: 
         title: "Time Spent(Hours)"
         label_column: visit_bin 
@@ -635,8 +634,8 @@ workflow:
         stroked: true 
         get_fill_color: "rgba_color"
         get_line_color: [0, 0, 0]
-        opacity: 0.65
-        get_line_width: 0.35 
+        opacity: 0.55
+        get_line_width: 0.25 
       legend: 
         title: "Time Spent"
         label_column: visit_bin 
